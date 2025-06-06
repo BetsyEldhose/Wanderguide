@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Review Management</h1>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="container">
+    <!-- Table Section -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">Existing Reviews</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Rating</th>
+                            <th>Comment</th>
+                            <th>Place</th>
+                            <th>Date</th>
+                            <th>Image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if reviews %}
+                            {% for review in reviews %}
+                                <tr>
+                                    <td>{{ review.id }}</td>
+                                    <td>{{ review.name }}</td>
+                                    <td>{{ review.rating }}</td>
+                                    <td>{{ review.comment }}</td>
+                                    <td>{{ review.place_name }}</td>
+                                    <td>{{ review.date }}</td>
+                                    <td><img style="height:100px" src='/static/{{ review.image_url }}'></td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">No reviews available.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

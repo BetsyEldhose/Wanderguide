@@ -1,0 +1,254 @@
+{% extends "admin/base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Hotel Management</h1>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="container">
+    <!-- Form Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            {% if hotel_to_edit %}Edit Hotel{% else %}Add a New Hotel{% endif %}
+        </div>
+        <div class="card-body">
+            <form action="/admin-hotels" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="hotel_id" value="{{ hotel_to_edit.id if hotel_to_edit }}">
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="location" class="form-label">Select Location</label>
+                        <select name="location" id="location" class="form-select" required>
+                            {% for place in places %}
+                                <option value="{{ place.id }}" {% if hotel_to_edit and hotel_to_edit.location_id == place.id %}selected{% endif %}>
+                                    {{ place.place_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="name" class="form-label">Hotel Name</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ hotel_to_edit.name if hotel_to_edit }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="ph_no" class="form-label">Contact</label>
+                        <input type="text" name="ph_no" id="ph_no" class="form-control" value="{{ hotel_to_edit.contact if hotel_to_edit }}" required>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" name="email" id="email" class="form-control" value="{{ hotel_to_edit.email if hotel_to_edit }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" name="address" id="address" class="form-control" value="{{ hotel_to_edit.address if hotel_to_edit }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="available_rooms" class="form-label">Available Rooms</label>
+                        <input type="number" name="available_rooms" id="available_rooms" class="form-control" value="{{ hotel_to_edit.available_rooms if hotel_to_edit }}" required>
+                    </div>
+                </div>
+
+                <!-- Image fields remain the same -->
+                <div class="row">
+                    <!-- Inside the form, modify the image sections -->
+<div class="col-md-4 mb-3">
+    <label for="image" class="form-label">Main Hotel Image</label>
+    <input type="file" name="image" id="image" class="form-control">
+    {% if hotel_to_edit and hotel_to_edit.image %}
+        <div class="mt-2">
+            <img src="{{ url_for('static', filename=hotel_to_edit.image) }}" alt="Main Image" class="img-thumbnail" width="100">
+            <form action="/admin-hotels/{{ hotel_to_edit.id }}/delete-image" method="post" class="mt-2">
+                <input type="hidden" name="image_field" value="image">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image?')">Delete</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+
+<div class="col-md-4 mb-3">
+    <label for="image_1" class="form-label">Image 1</label>
+    <input type="file" name="image_1" id="image_1" class="form-control">
+    {% if hotel_to_edit and hotel_to_edit.image_1 %}
+        <div class="mt-2">
+            <img src="{{ url_for('static', filename=hotel_to_edit.image_1) }}" alt="Image 1" class="img-thumbnail" width="100">
+            <form action="/admin-hotels/{{ hotel_to_edit.id }}/delete-image" method="post" class="mt-2">
+                <input type="hidden" name="image_field" value="image_1">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image?')">Delete</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+
+<div class="col-md-4 mb-3">
+    <label for="image_2" class="form-label">Image 2</label>
+    <input type="file" name="image_2" id="image_2" class="form-control">
+    {% if hotel_to_edit and hotel_to_edit.image_2 %}
+        <div class="mt-2">
+            <img src="{{ url_for('static', filename=hotel_to_edit.image_2) }}" alt="Image 2" class="img-thumbnail" width="100">
+            <form action="/admin-hotels/{{ hotel_to_edit.id }}/delete-image" method="post" class="mt-2">
+                <input type="hidden" name="image_field" value="image_2">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image?')">Delete</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+
+<div class="col-md-4 mb-3">
+    <label for="image_3" class="form-label">Image 3</label>
+    <input type="file" name="image_3" id="image_3" class="form-control">
+    {% if hotel_to_edit and hotel_to_edit.image_3 %}
+        <div class="mt-2">
+            <img src="{{ url_for('static', filename=hotel_to_edit.image_3) }}" alt="Image 3" class="img-thumbnail" width="100">
+            <form action="/admin-hotels/{{ hotel_to_edit.id }}/delete-image" method="post" class="mt-2">
+                <input type="hidden" name="image_field" value="image_3">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image?')">Delete</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+            
+                <button type="submit" class="btn btn-success">
+                    {% if hotel_to_edit %}Update Hotel{% else %}Add Hotel{% endif %}
+                </button>
+                {% if hotel_to_edit %}
+                    <a href="/admin-hotels" class="btn btn-secondary">Cancel</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">Hotels List</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Main Image</th>
+                            <th>Image 1</th>
+                            <th>Image 2</th>
+                            <th>Image 3</th>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Available Rooms</th>
+                            <th>Location</th> <!-- Updated column label -->
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hotel in hotels %}
+                            <tr>
+                                <td>
+                                    {% if hotel.image %}
+                                        <img src="{{ url_for('static', filename=hotel.image) }}" alt="Main Image" width="50">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hotel.image_1 %}
+                                        <img src="{{ url_for('static', filename=hotel.image_1) }}" alt="Image 1" width="50">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hotel.image_2 %}
+                                        <img src="{{ url_for('static', filename=hotel.image_2) }}" alt="Image 2" width="50">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if hotel.image_3 %}
+                                        <img src="{{ url_for('static', filename=hotel.image_3) }}" alt="Image 3" width="50">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
+                                <td>{{ hotel.name }}</td>
+                                <td>{{ hotel.contact }}</td>
+                                <td>{{ hotel.email }}</td>
+                                <td>{{ hotel.address }}</td>
+                                <td>{{ hotel.available_rooms }}</td>
+                                <td>{{ hotel.place_name or 'Not Assigned' }}</td> <!-- Displays location name -->
+                                <td>
+                                    <a href="/admin-hotels/{{ hotel.id }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <a href="/admin-hotels/{{ hotel.id }}/delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this hotel?')">Delete</a>
+                                    <br><br>
+                                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#reviewsModal{{ hotel.id }}">View Reviews</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals for Reviews (unchanged) -->
+{% for hotel in hotels %}
+<div class="modal fade" id="reviewsModal{{ hotel.id }}" tabindex="-1" aria-labelledby="reviewsModalLabel{{ hotel.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewsModalLabel{{ hotel.id }}">Reviews for {{ hotel.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Review</th>
+                            <th>Rating</th>
+                            <th>Image</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for review in hotel.reviews %}
+                        <tr>
+                            <td>{{ review.user_id }}</td>
+                            <td>{{ review.review }}</td>
+                            <td>{{ review.rating }}</td>
+                            <td>
+                                {% if review.image_url %}
+                                    <img src="{{ url_for('static', filename=review.image_url) }}" alt="Review Image" width="50">
+                                {% else %}
+                                    No Image
+                                {% endif %}
+                            </td>
+                            <td>{{ review.date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

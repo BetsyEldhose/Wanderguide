@@ -1,0 +1,241 @@
+/* General Reset and Box-Sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.8;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #004d40;
+    color: #fff;
+    padding: 20px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .logo {
+    font-size: 28px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    color: #e8c860;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(to right, #004d40, #00695c);
+    color: #fff;
+    padding: 100px 20px;
+    text-align: center;
+    border-bottom: 5px solid #e8c860;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.6;
+}
+
+/* Container */
+.container {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* About and Services Sections */
+section {
+    margin: 60px 0;
+}
+
+.about, .services, .testimonial {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about h2, .services h2, .testimonial h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #004d40;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.about p, .services ul li, .testimonial p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* Services List */
+.services ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+/* Footer */
+.footer {
+    background: #004d40;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    margin-top: 40px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #004d40;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #00695c;
+}
+
+/* Testimonials Section */
+.testimonial {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.testimonial-item {
+    flex: 1;
+    max-width: 45%;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-item p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.testimonial-item h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #004d40;
+}
+
+/* Contact Form Section */
+.form-section {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #004d40;
+}
+
+.form-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-section label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+.form-section input, .form-section textarea {
+    padding: 12px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.form-section .btn-primary {
+    background-color: #004d40;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.form-section .btn-primary:hover {
+    background-color: #00695c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar ul {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .about h2, .services h2, .testimonial h2 {
+        font-size: 2rem;
+    }
+
+    .testimonial-item {
+        flex: 1;
+        max-width: 100%;
+    }
+
+    .form-section {
+        max-width: 100%;
+    }
+}

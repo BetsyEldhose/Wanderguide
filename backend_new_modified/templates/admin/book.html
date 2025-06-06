@@ -1,0 +1,81 @@
+{% extends "admin/base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Booking Management</h1>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="container">
+    <!-- Tabs Section -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">Existing Bookings</div>
+        <div class="card-body">
+            <!-- Nav Tabs -->
+            <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="booked-tab" data-bs-toggle="tab" href="#booked" role="tab" aria-controls="booked" aria-selected="true">Booked</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="ongoing-tab" data-bs-toggle="tab" href="#ongoing" role="tab" aria-controls="ongoing" aria-selected="false">Ongoing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="completed-tab" data-bs-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Completed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="cancelled-tab" data-bs-toggle="tab" href="#cancelled" role="tab" aria-controls="cancelled" aria-selected="false">Cancelled</a>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="bookingTabContent">
+                {% for status in ['booked', 'ongoing', 'completed', 'cancelled'] %}
+                    <div class="tab-pane fade {% if status == 'booked' %}show active{% endif %}" id="{{ status }}" role="tabpanel" aria-labelledby="{{ status }}-tab">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cab Details</th>
+                                        <th>User</th>
+                                        <th>Start Point</th>
+                                        <th>Destination</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if booking %}
+                                        {% for book in booking if book.status|lower == status %}
+                                            <tr>
+                                                <td>{{ book.id }}</td>
+                                                <td>Driver: {{ book.driver_name }}<br>Details: {{ book.cab_details }}</td>
+                                                <td>{{ book.user }}</td>
+                                                <td>{{ book.start }}</td>
+                                                <td>{{ book.end }}</td>
+                                                <td>{{ book.status }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6" class="text-center">No {{ status }} bookings available.</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "admin/base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Places Management</h1>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="container">
+    <!-- Form Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            {% if place_to_edit %}Edit Place{% else %}Add a New Place{% endif %}
+        </div>
+        <div class="card-body">
+            <form action="/admin-place" method="post" enctype="multipart/form-data">
+                <!-- Hidden field for place ID in edit mode -->
+                {% if place_to_edit %}
+                    <input type="hidden" name="place_id" value="{{ place_to_edit.id }}">
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="place" class="form-label">Place Name</label>
+                        <input type="text" id="place" name="place" class="form-control" 
+                               placeholder="Enter place name" 
+                               value="{{ place_to_edit.place_name if place_to_edit }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="latitude" class="form-label">Latitude</label>
+                        <input type="text" id="latitude" name="latitude" class="form-control" 
+                               placeholder="Enter latitude" 
+                               value="{{ place_to_edit.latitude if place_to_edit }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="longitude" class="form-label">Longitude</label>
+                        <input type="text" id="longitude" name="longitude" class="form-control" 
+                               placeholder="Enter longitude" 
+                               value="{{ place_to_edit.longitude if place_to_edit }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="popular" class="form-label">Popular Place</label>
+                        <select id="popular" name="popular" class="form-control"  required>
+                            <option value="" selected hidden>-- Select an option --</option>
+                            <option value="true" {% if place_to_edit and place_to_edit.popular %}selected{% endif %}>True</option>
+                            <option value="false" {% if place_to_edit and not place_to_edit.popular %}selected{% endif %}>False</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Existing Photos (Edit Mode Only) -->
+                {% if place_to_edit and photos %}
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Existing Photos</label>
+                            <div class="d-flex flex-wrap">
+                                {% for photo in photos %}
+                                    <div class="m-2">
+                                        <img src="{{ url_for('static', filename=photo.place_photo) }}" alt="Place Photo" class="img-thumbnail" width="100">
+                                        <div class="mt-2">
+                                            <input type="checkbox" name="delete_photos" value="{{ photo.id }}" id="delete_{{ photo.id }}">
+                                            <label for="delete_{{ photo.id }}">Delete</label>
+                                        </div>
+                                        <div class="mt-2">
+                                            <label for="replace_{{ photo.id }}">Replace with:</label>
+                                            <input type="file" name="replace_photos" id="replace_{{ photo.id }}" class="form-control">
+                                            <input type="hidden" name="replace_photo_ids" value="{{ photo.id }}">
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- New Photos -->
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="photos" class="form-label">Add New Photos</label>
+                        <input type="file" id="photos" name="photos" class="form-control" multiple>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    {% if place_to_edit %}Update Place{% else %}Add Place{% endif %}
+                </button>
+                {% if place_to_edit %}
+                    <a href="/admin-place" class="btn btn-secondary">Cancel</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">Places List</div>
+        <div class="card-body">
+            <!-- Search Form -->
+            <form action="/admin-place" method="get" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search by place name" value="{{ search_query }}">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    {% if search_query %}
+                        <a href="/admin-place" class="btn btn-secondary">Clear</a>
+                    {% endif %}
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Photos</th>
+                            <th>Popular</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if places %}
+                            {% for place in places %}
+                                <tr>
+                                    <td>{{ place.place_name }}</td>
+                                    <td>{{ place.latitude }}</td>
+                                    <td>{{ place.longitude }}</td>
+                                    <td>
+                                        {% if place_photos[place.id] %}
+                                            {% for photo in place_photos[place.id] %}
+                                                <img src="{{ url_for('static', filename=photo.place_photo) }}" alt="Place Photo" width="50">
+                                            {% endfor %}
+                                        {% else %}
+                                            No Photos
+                                        {% endif %}
+                                    </td>
+                                    <td>{% if place.popular!='0'%} 
+                                        {{place.popular}}
+                                    {% else %}
+                                        Not available
+                                    {% endif %}
+
+                                </td>
+                                    <td>
+                                        <a href="/admin-place/{{ place.id }}" class="btn btn-primary">Edit</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">No places found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

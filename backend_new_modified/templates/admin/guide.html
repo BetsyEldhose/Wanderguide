@@ -1,0 +1,145 @@
+{% extends "admin/base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Guide Management</h1>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="container">
+    <!-- Form Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            {% if guide_to_edit %}Edit Guide{% else %}Add a New Guide{% endif %}
+        </div>
+        <div class="card-body">
+            <form action="/admin-guide" method="post">
+                <!-- Hidden field for guide ID in edit mode -->
+                {% if guide_to_edit %}
+                    <input type="hidden" name="guide_id" value="{{ guide_to_edit.id }}">
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="place" class="form-label">Select Place</label>
+                        <select name="place" id="place" class="form-select">
+                            {% for place in places %}
+                                <option value="{{ place.id }}" {% if guide_to_edit and guide_to_edit.place_id == place.id %}selected{% endif %}>
+                                    {{ place.place_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="name" class="form-label">Guide Name</label>
+                        <input type="text" name="name" id="name" class="form-control" 
+                               placeholder="Enter guide name" 
+                               value="{{ guide_to_edit.name if guide_to_edit }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="text" name="age" id="age" class="form-control" 
+                               placeholder="Enter age" 
+                               value="{{ guide_to_edit.age if guide_to_edit }}" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="ph_no" class="form-label">Contact</label>
+                        <input type="text" name="ph_no" id="ph_no" class="form-control" 
+                               placeholder="Enter contact number" 
+                               value="{{ guide_to_edit.phone_no if guide_to_edit }}" maxlength="10" minlength="10" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select name="gender" id="gender" class="form-select" required>
+                            <option value="Male" {% if guide_to_edit and guide_to_edit.gender == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if guide_to_edit and guide_to_edit.gender == 'Female' %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if guide_to_edit and guide_to_edit.gender == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" name="email" id="email" class="form-control" 
+                               placeholder="Enter email address" 
+                               value="{{ guide_to_edit.email if guide_to_edit }}" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select name="status" id="status" class="form-select" required>
+                            <option value="Available" {% if guide_to_edit and guide_to_edit.status == 'Available' %}selected{% endif %}>Available</option>
+                            <option value="Not Available" {% if guide_to_edit and guide_to_edit.status == 'Not Available' %}selected{% endif %}>Not Available</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    {% if guide_to_edit %}Update Guide{% else %}Add Guide{% endif %}
+                </button>
+                {% if guide_to_edit %}
+                    <a href="/admin-guide" class="btn btn-secondary">Cancel</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">Guides List</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                            <th>Place</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if guides %}
+                            {% for guide in guides %}
+                                <tr>
+                                    <td>{{ guide.name }}</td>
+                                    <td>{{ guide.age }}</td>
+                                    <td>{{ guide.gender }}</td>
+                                    <td>{{ guide.phone_no }}</td>
+                                    <td>{{ guide.email }}</td>
+                                    <td>{{ guide.place_name }}</td>
+                                    <td>{{ guide.status }}</td>
+                                    <td>
+                                        <a href="/admin-guide/{{ guide.id }}" class="btn btn-primary">Edit</a>
+                                        <a href="/admin-guide/{{ guide.id }}/delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this guide?')">Delete</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center">No guides available.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

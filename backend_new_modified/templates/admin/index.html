@@ -1,0 +1,185 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Dashboard</h1>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Stats Row -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="card-text">{{ user_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Total Bookings</h5>
+                    <p class="card-text">{{ booking_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Total Events</h5>
+                    <p class="card-text">{{ event_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Total Reviews</h5>
+                    <p class="card-text">{{ review_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">Total Drivers</h5>
+                    <p class="card-text">{{ driver_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Total Guides</h5>
+                    <p class="card-text">{{ guide_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Total Hotels</h5>
+                    <p class="card-text">{{ hotel_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Total Spots</h5>
+                    <p class="card-text">{{ spot_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity and Graphs -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">Activity Overview</div>
+                <div class="card-body">
+                    <!-- Booking Status Pie Chart -->
+                    <canvas id="bookingStatusChart" height="200"></canvas>
+                    <hr>
+                    <!-- Recent Bookings -->
+                    <h5>Recent Bookings</h5>
+                    <ul class="list-group">
+                        {% for booking in recent_bookings %}
+                            <li class="list-group-item">
+                                {{ booking.user }} booked from {{ booking.start }} to {{ booking.end }} (status: {{ booking.status }} , Driver: {{ booking.driver }})
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header">Notifications</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for note in notifications %}
+                            <li class="list-group-item">
+                                {{ note.name }} rated {{ note.rating }}/5: "{{ note.comment }}" for place: {{ note.place_name}} ({{ note.date }}) 
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Feedback -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">User Feedback Analysis</div>
+                <div class="card-body">
+                    <!-- Review Ratings Bar Chart -->
+                    <canvas id="reviewRatingsChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Booking Status Chart
+        const bookingStatusCtx = document.getElementById('bookingStatusChart').getContext('2d');
+        const bookingStatusChart = new Chart(bookingStatusCtx, {
+            type: 'pie',
+            data: {
+                labels: [{% for status in booking_status %}'{{ status.status }}',{% endfor %}],
+                datasets: [{
+                    data: [{% for status in booking_status %}{{ status.count }},{% endfor %}],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Booking Status Distribution' }
+                }
+            }
+        });
+
+        // Review Ratings Chart
+        const reviewRatingsCtx = document.getElementById('reviewRatingsChart').getContext('2d');
+        const reviewRatingsChart = new Chart(reviewRatingsCtx, {
+            type: 'bar',
+            data: {
+                labels: [{% for rating in review_ratings %}'{{ rating.rating }}',{% endfor %}],
+                datasets: [{
+                    label: 'Number of Reviews',
+                    data: [{% for rating in review_ratings %}{{ rating.count }},{% endfor %}],
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Review Ratings Distribution' }
+                }
+            }
+        });
+    </script>
+{% endblock %}

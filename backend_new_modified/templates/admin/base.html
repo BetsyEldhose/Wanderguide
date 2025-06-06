@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wander Guide Admin Panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/admin/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        /* Fixed Scrollable Sidebar */
+        .sidebar {
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            top: 50px; /* Navbar height */
+            left: 0;
+            width: 250px; /* Sidebar width */
+            background-color: #f8f9fa;
+            padding-bottom: 20px;
+        }
+
+        /* Ensure the content doesn't overlap */
+        main {
+            margin-left: 250px; /* Same as sidebar width */
+        }
+
+        .sidebar .nav-link {
+            font-size: 1rem;
+            color: #495057;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #0d6efd;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+
+        .sidebar .nav-link.active {
+            color: #fff;
+            background-color: #0d6efd;
+            border-radius: 5px;
+        }
+
+        .sidebar h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .sidebar .bi {
+            margin-right: 8px;
+        }
+
+        .navbar-toggler {
+            border-color: #6c757d;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" style="height:50px">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Wander Guide</a>
+        <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Logout Button -->
+        <div class="ms-auto px-3">
+            <a href="/logout" class="btn btn-outline-light">Logout</a>
+        </div>
+    </header>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 bg-light sidebar collapse show" id="sidebarMenu">
+                <div class="position-sticky">
+                    <br>
+                    <h3 class="p-3">Admin Panel</h3>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-home">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-place">
+                                <i class="bi bi-geo-alt"></i> Places
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-event">
+                                <i class="bi bi-calendar-event"></i> Events
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-driver">
+                                <i class="bi bi-car-front"></i> Drivers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-guide">
+                                <i class="bi bi-people"></i> Guides
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-hotels">
+                                <i class="bi bi-building"></i> Hotels
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-spot">
+                                <i class="bi bi-map"></i> Famous Locations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-user">
+                                <i class="bi bi-person"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-review">
+                                <i class="bi bi-chat-dots"></i> Reviews
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-booking">
+                                <i class="bi bi-book"></i> Cab Bookings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                {% block content %} <!-- Unique content for each page will go here --> {% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentPath = window.location.pathname;
+            let navLinks = document.querySelectorAll(".sidebar .nav-link");
+
+            navLinks.forEach(link => {
+                if (link.getAttribute("href") === currentPath) {
+                    link.classList.add("active");
+
+                    // Scroll into view smoothly
+                    link.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
