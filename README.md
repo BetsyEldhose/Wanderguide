@@ -47,11 +47,17 @@
 
 ## 🛠️ Tech Stack
 
-| Frontend | Backend | Others |
-|----------|---------|--------|
-| React Native | Node.js / Express | Firebase / MongoDB (optional) |
-| Expo | REST APIs | Google Maps API |
-| React Navigation | | Socket.io (for real-time features) |
+
+| Category           | Technologies / Tools Used                                             |
+|--------------------|----------------------------------------------------------------------|
+| **Backend**        | Flask (Python), REST APIs                                            |
+| **Database**       | MySQL (via XAMPP)                                                    |
+| **Environment**    | Python virtual environment, `requirements.txt` for dependencies     |
+| **Frontend**       | React Native (Expo)                                                  |
+| **Platform**       | Android                                                             |
+| **APIs**           | Google Maps API                                                    |
+| **IDE**            | Visual Studio Code                                                 |
+| **Version Control**| Git                                                                |
 
 ---
 
