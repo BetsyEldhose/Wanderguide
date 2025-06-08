@@ -30,7 +30,7 @@
 ## 📸 Screenshots
 
 
-![Home Screen](https://github.com/user-attachments/assets/c70e661b-99dd-4570-bff7-c5955da0d7ab)
+<img src="https://github.com/user-attachments/assets/c70e661b-99dd-4570-bff7-c5955da0d7ab" alt="Home Screen" width="400"/>
 
  
 ![Cab Tracking](./screenshots/cab-tracking.png)  
