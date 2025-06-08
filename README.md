@@ -29,7 +29,6 @@
 
 ## 📸 Screenshots
 
-> _Add your screenshots here for better visual understanding_
 
 ![Home Screen](./screenshots/home.png)  
 ![Cab Tracking](./screenshots/cab-tracking.png)  
