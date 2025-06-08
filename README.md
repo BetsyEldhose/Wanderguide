@@ -40,6 +40,7 @@
 
 <img src="https://github.com/user-attachments/assets/5ac301de-04cf-4ac4-bcb9-0ab03891c726" alt="Home Screen" width="300"/>
 
+<img src="https://github.com/user-attachments/assets/7ec930f3-ca64-47d0-b6fb-7d211f4926a8" alt="Home Screen" width="300"/>
 
 
 ---
