@@ -30,7 +30,8 @@
 ## 📸 Screenshots
 
 
-![Home Screen](./screenshots/home.png)  
+![Home Screen](![WhatsApp Image 2025-06-08 at 12 00 56_35da9316](https://github.com/user-attachments/assets/5cb10e37-dc3b-4160-9602-5cca5f9d22d7)
+)  
 ![Cab Tracking](./screenshots/cab-tracking.png)  
 ![Local Guides](./screenshots/local-guides.png)
 
